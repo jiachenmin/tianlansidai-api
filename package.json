@@ -33,7 +33,7 @@
     "lodash": "^4.17.11",
     "md5": "^2.2.1",
     "moment": "^2.24.0",
-    "mongoose": "^5.4.20",
+    "mongoose": "^5.7.5",
     "pidusage": "^2.0.17",
     "protobufjs": "^6.8.8",
     "qr-image": "^3.2.0",
