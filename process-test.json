@@ -1,0 +1,23 @@
+{
+    "apps" : [{
+        "name": "azureRibbonTest",
+        "script": "app.js",
+        "cwd": "./",
+        "watch": false,
+        "exec_mode" : "cluster",
+        "instances" : "max",
+        "instance_var": "NODE_APP_INSTANCE",
+        "ignore_watch": ["tmp"],
+        "log_date_format": "YYYY-MM-DD HH:mm:ssZ",
+        "env": {
+            "NODE_ENV": "test"
+        },
+        "env_dev": {
+	
+        },
+        "env_production": {
+            "NODE_ENV": "test"
+        }
+    }]
+}
+

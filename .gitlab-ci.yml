@@ -1,0 +1,66 @@
+before_script:
+  - export PATH=/usr/local/node/node-v8.12.0-linux-x64/bin:$PATH
+  - export PATH=/usr/local/node/node-v11.13.0-linux-x64/bin:$PATH
+  - export PATH=/usr/local/node/bin:$PATH
+  - export PATH=/usr/local/mvn/bin:$PATH
+  - export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+
+variables:
+  DEPLOY_PATH: /home/azureRibbon/azure-ribbon-api/
+
+cache:
+  key: ${CI_COMMIT_SHA}
+  paths:
+    - node_modules/
+
+stages:
+  - deploy-test
+  - deploy-prod
+
+deploy-test azure-ribbon-test-001:
+  stage: deploy-test
+  tags:
+    - test
+    - azure-ribbon-test-001
+  script:
+    - yarn
+    - rsync -e "ssh -o StrictHostKeyChecking=no" -avz --delete --exclude '.git' . azureRibbon@172.16.0.184:$DEPLOY_PATH
+    - ssh azureRibbon@172.16.0.184 "export PATH=/usr/local/node/node-v11.13.0-linux-x64/bin:$PATH && cd $DEPLOY_PATH && pm2 reload process-test.json"
+  only:
+    - master
+
+deploy-prod azure-ribbon-001:
+  stage: deploy-prod
+  tags:
+    - prod
+    - azure-ribbon-001
+  script:
+    - yarn
+    - rsync -e "ssh -o StrictHostKeyChecking=no" -avz --delete --exclude '.git' . azureRibbon@10.0.0.15:$DEPLOY_PATH
+    - ssh azureRibbon@10.0.0.15 "export PATH=/usr/local/node/node-v11.13.0-linux-x64/bin:$PATH && cd $DEPLOY_PATH && pm2 reload process.json"
+  only:
+    - release
+
+deploy-prod azure-ribbon-002:
+  stage: deploy-prod
+  tags:
+    - prod
+    - azure-ribbon-001
+  script:
+    - yarn
+    - rsync -e "ssh -o StrictHostKeyChecking=no" -avz --delete --exclude '.git' . azureRibbon@10.0.0.21:$DEPLOY_PATH
+    - ssh azureRibbon@10.0.0.21 "export PATH=/usr/local/node/node-v11.13.0-linux-x64/bin:$PATH && cd $DEPLOY_PATH && pm2 reload process.json"
+  only:
+    - release
+
+deploy-prod azure-ribbon-003:
+  stage: deploy-prod
+  tags:
+    - prod
+    - azure-ribbon-001
+  script:
+    - yarn
+    - rsync -e "ssh -o StrictHostKeyChecking=no" -avz --delete --exclude '.git' . azureRibbon@10.0.0.22:$DEPLOY_PATH
+    - ssh azureRibbon@10.0.0.22 "export PATH=/usr/local/node/node-v11.13.0-linux-x64/bin:$PATH && cd $DEPLOY_PATH && pm2 reload process.json"
+  only:
+    - release
