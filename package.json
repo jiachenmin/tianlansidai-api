@@ -37,7 +37,7 @@
     "pidusage": "^2.0.17",
     "protobufjs": "^6.8.8",
     "qr-image": "^3.2.0",
-    "redis": "^2.8.0",
+    "redis": "^3.1.1",
     "request": "^2.88.0",
     "sandbox": "^0.8.6",
     "sha1": "^1.1.1",
